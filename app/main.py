@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.v1 import proxy_reservas, proxy_incidencias, proxy_auth
+from app.routes.v1 import proxy_reservas, proxy_incidencias, proxy_auth, proxy_attendance
 
 app = FastAPI(
     title="CAMPUS360 API Gateway",
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(proxy_auth.router, prefix="/api/v1")
 app.include_router(proxy_reservas.router, prefix="/api/v1")
 app.include_router(proxy_incidencias.router, prefix="/api/v1")
+app.include_router(proxy_attendance.router, prefix="/api/v1")
 
 @app.get("/health")
 def health_check():
