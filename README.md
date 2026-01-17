@@ -16,6 +16,7 @@ Las variables de entorno se definen en `.env`:
 RESERVAS_SERVICE_URL=http://localhost:8001/api/v1/reservas
 INCIDENCIAS_SERVICE_URL=http://localhost:8002/api/v1/incidencias
 AUTH_SERVICE_URL=http://localhost:8003/api/v1/auth
+ATTENDANCE_SERVICE_URL=http://localhost:8004/api/v1/attendance
 ```
 
 ## ▶Ejecución Local
