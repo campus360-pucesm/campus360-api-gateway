@@ -10,13 +10,32 @@ El **API Gateway** es el punto de entrada único para todo el ecosistema Campus3
 
 ## Configuración
 
-Las variables de entorno se definen en `.env`:
+### Variables de Entorno
+
+Las variables de entorno se definen en `.env`. Para empezar:
+
+1. Copia el archivo de ejemplo:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **⚠️ IMPORTANTE**: El `SECRET_KEY` debe ser **IDÉNTICO** al del backend de autenticación (`campus360-auth-backend/.env`). Si no coinciden, la validación de tokens fallará.
+
+Variables disponibles en `.env`:
 
 ```env
+# Service URLs
+AUTH_SERVICE_URL=http://localhost:8003
 RESERVAS_SERVICE_URL=http://localhost:8001/api/v1/reservas
 INCIDENCIAS_SERVICE_URL=http://localhost:8002/api/v1/incidencias
-AUTH_SERVICE_URL=http://localhost:8003/api/v1/auth
-ATTENDANCE_SERVICE_URL=http://localhost:8004/api/v1/attendance
+ATTENDANCE_SERVICE_URL=http://localhost:8004
+
+# JWT Configuration (MUST match auth backend)
+SECRET_KEY=campus360-super-secret-key-change-in-production
+ALGORITHM=HS256
+
+# CORS Configuration
+FRONTEND_URL=http://localhost:5173
 ```
 
 ## ▶Ejecución Local
