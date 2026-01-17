@@ -24,18 +24,32 @@ async def verify_token(request: Request):
         raise HTTPException(status_code=401, detail="Invalid Authorization Header format")
     
     try:
+        # Clean token (remove any extra whitespace)
+        token = token.strip()
+        
         # Decode JWT token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
         role = payload.get("role")
         
         if user_id is None:
-            raise HTTPException(status_code=401, detail="Invalid token payload")
+            raise HTTPException(status_code=401, detail="Invalid token payload: missing user_id")
         
         return {
             "user_id": user_id,
             "role": role
         }
-    except JWTError as e:
-        raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except jwt.JWTClaimsError as e:
+        raise HTTPException(status_code=401, detail=f"Invalid token claims: {str(e)}")
+    except jwt.JWTError as e:
+        # More specific error messages for debugging
+        error_msg = str(e)
+        if "Invalid header" in error_msg or "Not enough segments" in error_msg:
+            raise HTTPException(
+                status_code=401, 
+                detail="Invalid token format. Token may be corrupted or incomplete."
+            )
+        raise HTTPException(status_code=401, detail=f"Token validation failed: {error_msg}")
 
